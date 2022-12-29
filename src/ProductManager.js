@@ -29,7 +29,7 @@ class ProductManager {
             return [];
         }
     }
-    
+    /*
     async addProduct(product) {
         const products = await this.getProducts()
         if (!products.length) {
@@ -60,7 +60,7 @@ class ProductManager {
                 return productNew;
             }
         }
-    }
+    }*/
 
     async getProductById(idProduct) {
         const products = await this.getProducts()
