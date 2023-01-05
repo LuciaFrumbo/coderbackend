@@ -84,10 +84,9 @@ class ProductManager {
                 return product
             }
         })
-        const stringList = await JSON.stringify(updatedList,null, "\t")
-
-        await this.writeFile(stringList)
-        return stringList
+        await this.writeFile(updatedList)
+        return updatedList
+      
     }
 
     async deleteProduct(idProduct){

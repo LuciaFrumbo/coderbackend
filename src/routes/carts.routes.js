@@ -12,21 +12,32 @@ router.post("/", async (req, res) => {
     })
 })
 
-router.get("/:pId", async (req, res) => {
-    console.log(req.params);
+router.get("/:cId", async (req, res) => {
     const carts = await manager.getCarts()
-    const pId = req.params.pId;
-    const cart = carts.find (carts => carts.id === +pId);
+    const cId = req.params.cId;
+    const cart = carts.find (carts => carts.OrderId === +cId);
     if (!cart) {
-        return res.status(404).send("No existe un carricto con ese ID");
+        return res.status(404).send("No existe un carrito con ese ID");
     }
     res.send({ 
-        status: "success", 
+        status: cId, 
         data: cart.products});
 });
 
+router.post("/:cId/product/:pId", async (req,res) => {
+    const cId = req.params.cId;
+    const pId = req.params.pId;
+    await manager.addProductToCart(cId, pId)
+    if (!cId || !pId) {
+        res.status(404).send("verifique el Id del carrito o el producto");
+    }else {
+    res.send ({
+        status: "success",
+        data: "product updated"
+    })
+    }
+})
 
-//ruta POST que agregue el producto al carrito  seleccionado, y si el producto ya esta, solo sumar la cantidad
 
 
 module.exports = router;

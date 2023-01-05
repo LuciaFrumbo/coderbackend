@@ -22,7 +22,7 @@ router.get("/:pId", async (req, res) => {
     console.log(req.params);
     const products = await manager.getProducts()
     const pId = req.params.pId;
-    const product = products.find (products => products.id === +pId);
+    const product = products.find(products => products.id === +pId);
     if (!product) {
         return res.status(404).send("No existe un producto con ese ID");
     }
@@ -70,48 +70,20 @@ router.post("/", async (req, res) => {
     }
 });
 
-// NO FUNCIONA 
-/*router.put ("/:pId", async (req, res) => {
-        const products= await manager.getProducts()
-        const newProperties = req.body;
-        const productFound = products.find(product => product.id === req.params.pId)
-        const productUpdated = {...productFound, ...newProperties}
-        products.map(product => product.id === productUpdated.id)
-                res.json({
-                    status: "success",
-                    data: productUpdated
-                }) 
-        })
-        */
-//no anda y me cambia el json
 router.put ("/:pId", async (req, res) => { 
-    await manager.updateProduct(req.params.pId);
-    const newProperties = req.body;
-    res.json({
+    const newP = req.body;
+    const pId = +req.params.pId
+    const data = await manager.updateProduct(pId, newP);
+    console.log(data);
+    if(data) {
+        res.json({
         status: "success",
-        data: newProperties
+        data: "Product updated successfully"
     })
+} else {
+    res.status(400).send("Product not found")
+}
 })
-
-//NO FUNCIONA
-/*
-router.put ("/:pId", async (req, res) => {
-const products = await manager.getProducts()
-    const newProperties = req.body;
-        const productIndex = products.findIndex(product => products.id === req.params.pId);
-        if (productIndex < 0) {
-            return res.status(404).json({
-                status: "error",
-                data: "Product Not Found"
-            })
-        } else {
-            products[productIndex] = newProperties;
-            res.json ({
-                status: "success",
-                data: "Product updated successfully"
-            }) 
-        }
-    })*/
 
     router.delete("/:pId", async (req, res) => {
         await manager.deleteProduct(req.params.pId);
